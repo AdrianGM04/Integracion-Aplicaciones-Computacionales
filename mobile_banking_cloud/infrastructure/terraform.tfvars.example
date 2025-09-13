@@ -1,0 +1,59 @@
+# Archivo de configuración para despliegue
+# Archivo: terraform.tfvars.example
+
+# Copiar este archivo como terraform.tfvars y configurar los valores
+
+# Configuración básica
+aws_region   = "us-east-1"
+environment  = "dev"
+project_name = "mobile-banking"
+
+# Credenciales sensibles (configurar con valores reales)
+db_password = "your-secure-database-password-here"
+jwt_secret  = "your-jwt-secret-key-at-least-32-characters-long"
+
+# Configuración de CORS
+allowed_cors_origins = [
+  "https://your-mobile-app-domain.com",
+  "https://your-web-app-domain.com"
+]
+
+# Configuración de backup
+backup_retention_days = 7
+
+# Configuración de Lambda
+lambda_timeout = 30
+
+# Monitoreo
+enable_monitoring = true
+enable_encryption = true
+
+# Notificaciones
+notification_email = "admin@yourbank.com"
+
+# Retención de logs
+log_retention_days = 14
+
+# Tipos de instancia
+instance_types = {
+  rds_instance_class = "db.t3.micro"
+  redis_node_type    = "cache.t3.micro"
+  lambda_memory_size = 256
+}
+
+# Escalado automático
+scaling_config = {
+  min_capacity = 1
+  max_capacity = 10
+  target_utilization = 70
+}
+
+# Tags adicionales
+tags = {
+  Owner       = "DevOps Team"
+  CostCenter  = "IT"
+  Project     = "Mobile Banking"
+  Environment = "Development"
+}
+
+
