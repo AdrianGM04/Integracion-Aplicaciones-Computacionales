@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="transformaciones.xsl"?>
+<?xml-stylesheet type="text/css" href="catalogo_libros.css"?>
+<catalog>
+    <book isbn="978-0451524935">
+        <title>1984</title>
+        <author>George Orwell</author>
+        <year>1949</year>
+        <genre>Distopía</genre>
+        <price>12.99</price>
+        <stock>45</stock>
+        <format>Físico</format>
+    </book>
+    
+    <book isbn="978-0141439518">
+        <title>Orgullo y prejuicio</title>
+        <author>Jane Austen</author>
+        <year>1813</year>
+        <genre>Romance</genre>
+        <price>9.50</price>
+        <stock>28</stock>
+        <format>Digital</format>
+    </book>
+    
+    <book isbn="978-8497593795">
+        <title>El nombre del viento</title>
+        <author>Patrick Rothfuss</author>
+        <year>2007</year>
+        <genre>Fantasía</genre>
+        <price>18.75</price>
+        <stock>15</stock>
+        <format>Físico</format>
+    </book>
+    
+    <book isbn="978-8408180408">
+        <title>La sombra del viento</title>
+        <author>Carlos Ruiz Zafón</author>
+        <year>2001</year>
+        <genre>Misterio</genre>
+        <price>14.99</price>
+        <stock>32</stock>
+        <format>Digital</format>
+    </book>
+    
+    <book isbn="978-8466338141">
+        <title>Juego de tronos</title>
+        <author>George R. R. Martin</author>
+        <year>1996</year>
+        <genre>Fantasía épica</genre>
+        <price>22.50</price>
+        <stock>8</stock>
+        <format>Físico</format>
+    </book>
+    
+    <book isbn="978-6073116498">
+        <title>Cien años de soledad</title>
+        <author>Gabriel García Márquez</author>
+        <year>1967</year>
+        <genre>Realismo mágico</genre>
+        <price>16.25</price>
+        <stock>20</stock>
+        <format>Físico</format>
+    </book>
+    
+    <book isbn="978-0307474278">
+        <title>El código Da Vinci</title>
+        <author>Dan Brown</author>
+        <year>2003</year>
+        <genre>Suspense</genre>
+        <price>11.99</price>
+        <stock>50</stock>
+        <format>Digital</format>
+    </book>
+    
+    <book isbn="978-8499088099">
+        <title>Los pilares de la Tierra</title>
+        <author>Ken Follett</author>
+        <year>1989</year>
+        <genre>Novela histórica</genre>
+        <price>19.95</price>
+        <stock>12</stock>
+        <format>Físico</format>
+    </book>
+</catalog>

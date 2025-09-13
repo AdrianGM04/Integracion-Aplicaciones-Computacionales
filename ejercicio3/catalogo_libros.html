@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catálogo de Libros</title>
+    <link rel="stylesheet" href="catalogo_libros.css">
+</head>
+<body>
+    <div class="catalog">
+        <h1 class="catalog-title">Catálogo de Libros</h1>
+        <div class="books-grid" id="booksGrid">
+            <!-- Los libros se cargarán dinámicamente desde el XML -->
+        </div>
+    </div>
+
+    <script>
+        // Función para cargar y mostrar los libros desde el XML
+        async function loadBooks() {
+            try {
+                const response = await fetch('catalogo_libros.xml');
+                const xmlText = await response.text();
+                const parser = new DOMParser();
+                const xmlDoc = parser.parseFromString(xmlText, 'text/xml');
+                
+                const books = xmlDoc.getElementsByTagName('book');
+                const booksGrid = document.getElementById('booksGrid');
+                
+                for (let book of books) {
+                    const bookCard = createBookCard(book);
+                    booksGrid.appendChild(bookCard);
+                }
+            } catch (error) {
+                console.error('Error al cargar el XML:', error);
+                document.getElementById('booksGrid').innerHTML = 
+                    '<p style="color: white; text-align: center; font-size: 1.2rem;">Error al cargar el catálogo</p>';
+            }
+        }
+
+        // Función para crear una tarjeta de libro
+        function createBookCard(book) {
+            const card = document.createElement('div');
+            card.className = 'book-card';
+            
+            const title = book.getElementsByTagName('title')[0].textContent;
+            const author = book.getElementsByTagName('author')[0].textContent;
+            const year = book.getElementsByTagName('year')[0].textContent;
+            const genre = book.getElementsByTagName('genre')[0].textContent;
+            const price = book.getElementsByTagName('price')[0].textContent;
+            const stock = parseInt(book.getElementsByTagName('stock')[0].textContent);
+            const format = book.getElementsByTagName('format')[0].textContent;
+            const isbn = book.getAttribute('isbn');
+            
+            // Determinar clase de stock
+            let stockClass = 'high';
+            if (stock <= 15) stockClass = 'low';
+            else if (stock <= 30) stockClass = 'medium';
+            
+            // Determinar clase de formato
+            let formatClass = format === 'Físico' ? 'format-fisico' : 'format-digital';
+            
+            card.innerHTML = `
+                <div class="format-badge ${formatClass}">${format}</div>
+                <h2 class="book-title">${title}</h2>
+                <p class="book-author">${author}</p>
+                
+                <div class="book-details">
+                    <div class="book-detail">
+                        <span class="book-detail-label">Año:</span>
+                        <span class="book-detail-value year">${year}</span>
+                    </div>
+                    <div class="book-detail">
+                        <span class="book-detail-label">Género:</span>
+                        <span class="book-detail-value genre">${genre}</span>
+                    </div>
+                </div>
+                
+                <div class="book-price-stock">
+                    <div class="price">€${price}</div>
+                    <div class="stock ${stockClass}">
+                        <span class="stock-indicator ${stockClass}"></span>
+                        Stock: ${stock}
+                    </div>
+                </div>
+                
+                <div class="isbn">ISBN: ${isbn}</div>
+            `;
+            
+            return card;
+        }
+
+        // Cargar los libros cuando la página esté lista
+        document.addEventListener('DOMContentLoaded', loadBooks);
+    </script>
+</body>
+</html>
+
