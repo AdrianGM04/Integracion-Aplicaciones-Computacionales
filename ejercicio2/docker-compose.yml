@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  ollama:
+    image: ollama/ollama
+    container_name: ollama
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+    restart: unless-stopped
+    environment:
+      - OLLAMA_HOST=0.0.0.0
+
+  flask-app:
+    build: .
+    container_name: flask-ollama-chatbot
+    ports:
+      - "5000:5000"
+    depends_on:
+      - ollama
+    environment:
+      - OLLAMA_URL=http://ollama:11434
+      - MODEL_NAME=deepseek-coder
+    restart: unless-stopped
+
+volumes:
+  ollama_data:
