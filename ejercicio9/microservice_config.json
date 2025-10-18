@@ -1,0 +1,16 @@
+{
+  "service": {
+    "ip": "34.9.11.96",
+    "port": "5000",
+    "base_url": "http://34.9.11.96:5000"
+  },
+  "endpoints": {
+    "health": "/health",
+    "register": "/register",
+    "login": "/login",
+    "protected": "/protected",
+    "refresh": "/refresh",
+    "logout": "/logout",
+    "logout_all": "/logout_all"
+  }
+}

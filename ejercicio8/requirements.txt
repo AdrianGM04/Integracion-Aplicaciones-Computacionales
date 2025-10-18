@@ -1,0 +1,10 @@
+# Dependencias básicas (requeridas para ambas versiones)
+requests==2.31.0
+configparser==6.0.0
+
+# NOTA: Para la versión GUI (app.py) también se requiere:
+# - tkinter (incluido en Python por defecto en Windows/Mac)
+# - En Linux: sudo apt-get install python3-tk (Ubuntu/Debian)
+# - En Linux: sudo yum install tkinter (CentOS/RHEL)
+
+# Para servidores sin interfaz gráfica, usar app_cli.py en lugar de app.py

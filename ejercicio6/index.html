@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Microservicio de Libros - JWT + Redis</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📚 Microservicio de Libros</h1>
+            <p>Autenticación JWT con Redis - Gestión de Sesiones y Tokens</p>
+        </header>
+
+        <!-- Panel de Autenticación -->
+        <div id="auth-panel" class="panel">
+            <h2>🔐 Autenticación</h2>
+            
+            <!-- Formulario de Registro -->
+            <div id="register-form" class="auth-form">
+                <h3>Registro</h3>
+                <form id="registerForm">
+                    <div class="form-group">
+                        <label for="regName">Nombre:</label>
+                        <input type="text" id="regName" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="regEmail">Email:</label>
+                        <input type="email" id="regEmail" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="regPassword">Contraseña:</label>
+                        <input type="password" id="regPassword" name="password" required>
+                    </div>
+                    <button type="submit">Registrarse</button>
+                </form>
+            </div>
+
+            <!-- Formulario de Login -->
+            <div id="login-form" class="auth-form">
+                <h3>Iniciar Sesión</h3>
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label for="loginEmail">Email:</label>
+                        <input type="email" id="loginEmail" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="loginPassword">Contraseña:</label>
+                        <input type="password" id="loginPassword" name="password" required>
+                    </div>
+                    <button type="submit">Iniciar Sesión</button>
+                </form>
+            </div>
+
+            <!-- Estado de Autenticación -->
+            <div id="auth-status" class="auth-status" style="display: none;">
+                <h3>Estado de Sesión</h3>
+                <div id="user-info"></div>
+                <div id="token-info"></div>
+                <div class="auth-actions">
+                    <button id="refreshTokenBtn">🔄 Refrescar Token</button>
+                    <button id="checkStatusBtn">📊 Verificar Estado</button>
+                    <button id="logoutBtn">🚪 Cerrar Sesión</button>
+                    <button id="logoutAllBtn">🚪 Cerrar Todas las Sesiones</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Panel de Libros -->
+        <div id="books-panel" class="panel" style="display: none;">
+            <h2>📖 Gestión de Libros</h2>
+            
+            <!-- Controles de Libros -->
+            <div class="books-controls">
+                <button id="loadBooksBtn">📚 Cargar Todos los Libros (XML)</button>
+                <button id="loadDigitalBtn">💻 Libros Digitales</button>
+                <button id="showCreateFormBtn">➕ Crear Libro</button>
+            </div>
+
+            <!-- Formulario de Búsqueda -->
+            <div class="search-section">
+                <h3>🔍 Búsqueda</h3>
+                <div class="search-controls">
+                    <div class="form-group">
+                        <label for="searchIsbn">Buscar por ISBN:</label>
+                        <input type="text" id="searchIsbn" placeholder="Ej: 978-84-376-0494-7">
+                        <button id="searchByIsbnBtn">Buscar</button>
+                    </div>
+                    <div class="form-group">
+                        <label for="searchAuthor">Buscar por Autor:</label>
+                        <input type="text" id="searchAuthor" placeholder="Ej: Gabriel García Márquez">
+                        <button id="searchByAuthorBtn">Buscar</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Formulario de Crear/Editar Libro -->
+            <div id="book-form" class="book-form" style="display: none;">
+                <h3>📝 Formulario de Libro</h3>
+                <form id="bookForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="bookIsbn">ISBN:</label>
+                            <input type="text" id="bookIsbn" name="isbn" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="bookTitulo">Título:</label>
+                            <input type="text" id="bookTitulo" name="titulo" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="bookAutor">Autor:</label>
+                            <input type="text" id="bookAutor" name="autor" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="bookEditorial">Editorial:</label>
+                            <input type="text" id="bookEditorial" name="editorial" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="bookAno">Año de Publicación:</label>
+                            <input type="number" id="bookAno" name="año_publicacion" min="1000" max="2024" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="bookFormato">Formato:</label>
+                            <select id="bookFormato" name="formato" required>
+                                <option value="fisico">Físico</option>
+                                <option value="digital">Digital</option>
+                                <option value="ambos">Ambos</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="bookPrecio">Precio:</label>
+                            <input type="number" id="bookPrecio" name="precio" step="0.01" min="0" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="bookStock">Stock:</label>
+                            <input type="number" id="bookStock" name="stock" min="0" value="0">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="bookDescripcion">Descripción:</label>
+                        <textarea id="bookDescripcion" name="descripcion" rows="3"></textarea>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" id="saveBookBtn">💾 Guardar Libro</button>
+                        <button type="button" id="cancelBookBtn">❌ Cancelar</button>
+                        <button type="button" id="deleteBookBtn" style="display: none;">🗑️ Eliminar Libro</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Lista de Libros -->
+            <div id="books-list" class="books-list">
+                <h3>📚 Lista de Libros</h3>
+                <div id="books-container"></div>
+            </div>
+        </div>
+
+        <!-- Panel de Logs -->
+        <div class="panel">
+            <h2>📋 Logs de Actividad</h2>
+            <div class="logs-controls">
+                <button id="clearLogsBtn">🗑️ Limpiar Logs</button>
+                <button id="exportLogsBtn">📤 Exportar Logs</button>
+            </div>
+            <div id="logs-container" class="logs-container"></div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
